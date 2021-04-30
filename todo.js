@@ -7,3 +7,15 @@ btnField.addEventListener('click', function() {
         console.log(form.get(key));
     }
 });
+
+// old way of converting javascript objects into html elements
+
+/* function makeItems(title, descrption, status) {
+    const outerRow = document.createElement('div');
+    outerRow.classList.add(['row','jumbotron','section']);
+    
+    const titleDiv = document.createElement('div');
+    titleDiv.classList.add('col-md-2');
+
+    outerDiv.appendChild(titleDiv);
+} */
