@@ -9,6 +9,12 @@ const todos = [{
     description : ' have lunch at 1 pm today',
     createdAt : new Date().toString(),
     status : 'active'
+},,
+{
+    title : 'Dinner',
+    description : ' have dinner at 8 pm today',
+    createdAt : new Date().toString(),
+    status : 'active'
 }];
 
 
@@ -88,7 +94,6 @@ function renderTodoItem(todoItem) {
     row.appendChild(editBtnDiv);
     row.appendChild(deleteBtnDiv);
     actionDiv.appendChild(row);
-
 
     mainRow.appendChild(titleDiv);
     mainRow.appendChild(descriptionDiv);
