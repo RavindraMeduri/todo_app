@@ -22,8 +22,14 @@ btnField.addEventListener('click', function() {
 });
 
 function getTodo(title, description) {
+
+    // Task 1
+    // I have to extract the last element and get its id 
+    // and id + 1 will be it's new id
+    var id;
     return {
-        title, // Alternative - title : title
+        id,
+        title, // Alternative - title : title (new feature in js)
         description, // description : description
         createdAt : new Date().toString(),
         status : 'Active'
@@ -68,6 +74,16 @@ function renderTodoItem(todoItem) {
     statusBtn.className = 'btn btn-info';
     statusBtn.textContent = 'Mark Completed';
 
+    // Task 2
+    // you have to find out a todo from that list of todos
+    // whose id is todo.id
+    // and change the status of that 
+    // and call the render() function again
+
+    statusBtn.addEventListener('click', () => {
+        console.log(todo.id);
+    });
+
     markCompletedDiv.appendChild(statusBtn);
 
     const actionDiv = document.createElement('div');
@@ -91,6 +107,15 @@ function renderTodoItem(todoItem) {
     statusBtn = document.createElement('button');
     statusBtn.className = 'btn btn-danger';
     statusBtn.textContent = 'Delete';
+
+    // Task 3
+    // you have to remove a todo from that list of todos
+    // (filter function) 
+    // and call the render() function again
+
+    statusBtn.addEventListener('click', () => {
+        console.log(todo.id);
+    });
 
     deleteBtnDiv.appendChild(statusBtn);
 
