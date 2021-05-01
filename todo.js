@@ -1,41 +1,44 @@
-const todos = [{
-    title : 'Meeting',
-    description : ' have a meeting at 6 pm today',
-    createdAt : new Date().toString(),
-    status : 'active'
-},
-{
-    title : 'Lunch',
-    description : ' have lunch at 1 pm today',
-    createdAt : new Date().toString(),
-    status : 'active'
-},,
-{
-    title : 'Dinner',
-    description : ' have dinner at 8 pm today',
-    createdAt : new Date().toString(),
-    status : 'active'
-}];
-
-
+const todos = [];
 
 const formField = document.querySelector('#toDoFormId');
 const btnField = document.querySelector('#btn');
+const title = document.querySelector('#title');
+const description = document.querySelector('#description');
 
 btnField.addEventListener('click', function() {
     const form = new FormData(formField);
-    for(var key of form.keys()) {
-        console.log(form.get(key));
+    const formValues = {};
+    for(var val of form.keys()) {
+        formValues[val] = form.get(val);
     }
+
+    var todo = getTodo(formValues.title, formValues.description);
+
+    title.value = null;
+    description.value = null;
+
+    todos.push(todo);
+    render(todos);
 });
 
+function getTodo(title, description) {
+    return {
+        title, // Alternative - title : title
+        description, // description : description
+        createdAt : new Date().toString(),
+        status : 'Active'
+    };
+}
 
 function render(todos) {
-    const container = document.querySelector('.container');
+    const todo_list = document.querySelector('.todo_list');
     const items = todos.map(todo => renderTodoItem(todo));
 
+    // I have to clear all the contents of todo_list
+    todo_list.innerHTML = null;
+
     items.forEach(item => {
-        container.appendChild(item);
+        todo_list.appendChild(item);
     });
 }
 
@@ -105,10 +108,6 @@ function renderTodoItem(todoItem) {
 }
 
 
-
-
-
-render(todos);
 
 
 
