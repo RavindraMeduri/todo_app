@@ -40,12 +40,17 @@ btnField.addEventListener('click', function() {
         newTodos[idx] = todo;
         releaseEditLock();
         todos = newTodos;
+        persistTodos(todos);
     }
     
     title.value = null;
     description.value = null;
     render(todos);
 });
+
+function persistTodos(todos) {
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
 
 function editLock(id) {
     editId = id;
@@ -144,6 +149,7 @@ function renderTodoItem(todoItem) {
         todo.status = 'Completed';
         newTodos[idx] = todo;
         todos = newTodos;
+        persistTodos(todos);
         render(newTodos);
     });
 
@@ -188,12 +194,11 @@ function renderTodoItem(todoItem) {
 
     statusBtn.addEventListener('click', function() {
 
-        // mutable way
-
         // Immutable way
 
         var newTodos = todos.filter(t => t.id != todoItem.id);
         todos = newTodos;
+        persistTodos(todos);
         render(newTodos);
     });
 
