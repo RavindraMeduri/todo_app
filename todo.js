@@ -1,32 +1,80 @@
-const todos = [];
+// task - you have to complete the filter functionality
+// task - if the status of todo item is marked as completed
+// then the Mark Completed button should be disabled
+
+let todos = [];
+let isEdit = false;
+let editId = null;
 
 const formField = document.querySelector('#toDoFormId');
 const btnField = document.querySelector('#btn');
 const title = document.querySelector('#title');
 const description = document.querySelector('#description');
 
+// when the user clicks on the button
+
 btnField.addEventListener('click', function() {
+
     const form = new FormData(formField);
     const formValues = {};
     for(var val of form.keys()) {
         formValues[val] = form.get(val);
     }
 
-    var todo = getTodo(formValues.title, formValues.description);
 
+    if(!isEdit) {
+        // Add functionality
+        var todo = getTodo(formValues.title, formValues.description);
+        todos.push(todo);
+    }
+    else {
+        // Edit functionality
+
+        // immutable way
+
+        var newTodos = [...todos];
+        var idx = newTodos.findIndex(t => t.id == editId);
+        var todo = {...newTodos[idx]};
+        todo.title = formValues.title;
+        todo.description = formValues.description;
+        newTodos[idx] = todo;
+        releaseEditLock();
+        todos = newTodos;
+    }
+    
     title.value = null;
     description.value = null;
-
-    todos.push(todo);
     render(todos);
 });
 
+function editLock(id) {
+    editId = id;
+    isEdit = true;
+    btnField.textContent = 'Save';
+}
+
+function releaseEditLock() {
+    editd = null;
+    isEdit = false;
+    btnField.TextContent = 'Add Todo';
+}
+
+// Add a new todo item 
+
 function getTodo(title, description) {
 
-    // Task 1
+    
     // I have to extract the last element and get its id 
     // and id + 1 will be it's new id
     var id;
+    if(todos.length == 0) {
+        id = 1;
+    }
+    else {
+        var last = todos[todos.length - 1];
+        id = last.id + 1;
+    }
+
     return {
         id,
         title, // Alternative - title : title (new feature in js)
@@ -80,8 +128,23 @@ function renderTodoItem(todoItem) {
     // and change the status of that 
     // and call the render() function again
 
-    statusBtn.addEventListener('click', () => {
-        console.log(todo.id);
+    statusBtn.addEventListener('click', function() {
+        
+        // mutable way
+
+        // var todo = todos.find(t => t.id == todoItem.id);
+        // todo.status = 'Completed';
+        // render(todos);
+
+        // Immutable way
+
+        var newTodos = [...todos];
+        var idx = newTodos.findIndex(t => t.id == todoItem.id);
+        var todo = {... newTodos[idx]};
+        todo.status = 'Completed';
+        newTodos[idx] = todo;
+        todos = newTodos;
+        render(newTodos);
     });
 
     markCompletedDiv.appendChild(statusBtn);
@@ -99,6 +162,16 @@ function renderTodoItem(todoItem) {
     statusBtn.className = 'btn btn-primary';
     statusBtn.textContent = 'Edit';
 
+    // Edit Button functionality 
+
+    statusBtn.addEventListener('click', function() {
+        
+        title.value = todoItem.title;
+        description.value = todoItem.description;
+        editLock(todoItem.id);
+        
+    });
+
     editBtnDiv.appendChild(statusBtn);
 
     const deleteBtnDiv = document.createElement('div');
@@ -113,8 +186,15 @@ function renderTodoItem(todoItem) {
     // (filter function) 
     // and call the render() function again
 
-    statusBtn.addEventListener('click', () => {
-        console.log(todo.id);
+    statusBtn.addEventListener('click', function() {
+
+        // mutable way
+
+        // Immutable way
+
+        var newTodos = todos.filter(t => t.id != todoItem.id);
+        todos = newTodos;
+        render(newTodos);
     });
 
     deleteBtnDiv.appendChild(statusBtn);
@@ -131,6 +211,10 @@ function renderTodoItem(todoItem) {
 
     return mainRow;
 }
+
+
+render(todos);
+
 
 
 
