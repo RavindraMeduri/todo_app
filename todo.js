@@ -1,15 +1,28 @@
-// task - you have to complete the filter functionality
-// task - if the status of todo item is marked as completed
+// TODO - you have to complete the filter functionality
+// TODO - if the status of todo item is marked as completed
 // then the Mark Completed button should be disabled
+// TODO - update API (status --> Active - Completed)
+//TODO - Delete API (delete a todo)
+
+// To fetch data from local storage
+// const data = localStorage.getItem('todos');
+// let todos = JSON.parse(data);
 
 let todos = [];
 let isEdit = false;
 let editId = null;
 
+fetchTodos()
+    .then(data => {
+        todos = data;
+        render(todos);
+    })
+
 const formField = document.querySelector('#toDoFormId');
 const btnField = document.querySelector('#btn');
 const title = document.querySelector('#title');
 const description = document.querySelector('#description');
+//const showActiveCheckboxField = document.querySelector('#inlineCheckbox1');
 
 // when the user clicks on the button
 
@@ -25,7 +38,13 @@ btnField.addEventListener('click', function() {
     if(!isEdit) {
         // Add functionality
         var todo = getTodo(formValues.title, formValues.description);
-        todos.push(todo);
+        createTodos(todo)
+            .then(data => {
+                todos = [...todos, todo];
+              //  todos.push(todo); // Another way of adding to todos list
+                render(todos);
+            })
+        
     }
     else {
         // Edit functionality
@@ -40,17 +59,19 @@ btnField.addEventListener('click', function() {
         newTodos[idx] = todo;
         releaseEditLock();
         todos = newTodos;
-        persistTodos(todos);
+      //  persistTodos(todos);
     }
     
     title.value = null;
     description.value = null;
-    render(todos);
+   
 });
 
-function persistTodos(todos) {
-    localStorage.setItem('todos', JSON.stringify(todos));
-}
+// function used to store data in localStorage
+
+// function persistTodos(todos) {
+//     localStorage.setItem('todos', JSON.stringify(todos));
+// }
 
 function editLock(id) {
     editId = id;
@@ -149,7 +170,7 @@ function renderTodoItem(todoItem) {
         todo.status = 'Completed';
         newTodos[idx] = todo;
         todos = newTodos;
-        persistTodos(todos);
+      //  persistTodos(todos);
         render(newTodos);
     });
 
@@ -198,7 +219,7 @@ function renderTodoItem(todoItem) {
 
         var newTodos = todos.filter(t => t.id != todoItem.id);
         todos = newTodos;
-        persistTodos(todos);
+     //   persistTodos(todos);
         render(newTodos);
     });
 
@@ -218,7 +239,7 @@ function renderTodoItem(todoItem) {
 }
 
 
-render(todos);
+
 
 
 
